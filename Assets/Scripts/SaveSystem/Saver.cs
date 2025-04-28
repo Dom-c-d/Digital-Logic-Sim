@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using DLS.Description;
 using DLS.Game;
+using DLS.Graphics;
 
 namespace DLS.SaveSystem
 {
@@ -18,8 +19,8 @@ namespace DLS.SaveSystem
 			projectDescription.LastSaveTime = DateTime.Now;
 			projectDescription.DLSVersion_LastSaved = Main.DLSVersion.ToString();
 			projectDescription.DLSVersion_EarliestCompatible = Main.DLSVersion_EarliestCompatible.ToString();
-
-			string data = Serializer.SerializeProjectDescription(projectDescription);
+            projectDescription.CustomPinColors = DLS.Graphics.ContextMenu.pinColors;
+            string data = Serializer.SerializeProjectDescription(projectDescription);
 			WriteToFile(data, SavePaths.GetProjectDescriptionPath(projectDescription.ProjectName));
 		}
 

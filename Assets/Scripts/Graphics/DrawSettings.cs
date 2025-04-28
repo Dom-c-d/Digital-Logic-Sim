@@ -54,53 +54,13 @@ namespace DLS.Graphics
 
 		static ThemeDLS CreateTheme()
 		{
-			const float whiteLow = 0.4f;
-			const float whiteHigh = 0.9f;
-			Color[] stateLow =
-			{
-				new(0.2f, 0.1f, 0.1f),
-				new(0.25f, 0.18f, 0.04f),
-				new(0.1f, 0.2f, 0.1f),
-				new(0.1f, 0.14f, 0.35f),
-				new(0.19f, 0.12f, 0.28f),
-				new(0.25f, 0.1f, 0.25f),
-				new(whiteLow, whiteLow, whiteLow)
-			};
-
-			Color[] stateHigh =
-			{
-				new(0.95f, 0.3f, 0.31f),
-				new(0.92f, 0.7f, 0.25f),
-				new(0.25f, 0.66f, 0.31f),
-				new(0.2f, 0.5f, 1f),
-				new(0.6f, 0.4f, 0.98f),
-				new(0.84f, 0.33f, 0.9f),
-				new(whiteHigh, whiteHigh, whiteHigh)
-			};
-            //Delete above once new color system built
-            Color[] stateHover = stateLow.Select(c => Brighten(c, 0.1f)).ToArray();
-			//if (Loader.LoadedColors != null && Loader.LoadedColors.Length > 0)
-			//{
-			//	for (int i = 0; i < Loader.LoadedColors.Length; i += 3)
-			//	{
-			//		Color low = Loader.LoadedColors[i];
-			//		Color high = Loader.LoadedColors[i + 1];
-			//		Color hover = Loader.LoadedColors[i + 2];
-
-			//		stateLow = stateLow.Append(low).ToArray();
-			//		stateHigh = stateHigh.Append(high).ToArray();
-			//		stateHover = stateHover.Append(hover).ToArray();
-			//	}
-			//}
+			
 			return new ThemeDLS
             {
                 SelectionBoxCol = new Color(1, 1, 1, 0.1f),
                 SelectionBoxMovingCol = new Color(1, 1, 1, 0.125f),
                 SelectionBoxInvalidCol = MakeCol255(243, 81, 75, 120),
                 SelectionBoxOtherIsInvaldCol = MakeCol255(243, 150, 75, 80),
-                StateLowCol = stateLow,
-                StateHighCol = stateHigh,
-                StateHoverCol = stateHover,
                 StateDisconnectedCol = Color.black,
                 DevPinHandle = MakeCol(0.31f),
                 DevPinHandleHighlighted = MakeCol(0.7f),

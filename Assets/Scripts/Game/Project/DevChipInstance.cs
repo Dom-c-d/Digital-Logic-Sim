@@ -62,8 +62,8 @@ namespace DLS.Game
 			DevChipInstance instance = new();
 			instance.LastSavedDescription = description;
 
-			// Set any null arrays to empty so don't have to check
-			description.SubChips ??= Array.Empty<SubChipDescription>();
+            // Set any null arrays to empty so don't have to check
+            description.SubChips ??= Array.Empty<SubChipDescription>();
 			description.InputPins ??= Array.Empty<PinDescription>();
 			description.OutputPins ??= Array.Empty<PinDescription>();
 			description.Wires ??= Array.Empty<WireDescription>();

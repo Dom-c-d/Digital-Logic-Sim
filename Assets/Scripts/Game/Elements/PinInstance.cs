@@ -1,8 +1,12 @@
 using System;
+using System.Linq;
 using DLS.Description;
 using DLS.Graphics;
 using DLS.Simulation;
 using UnityEngine;
+using DLS.ColorStorage;
+using System.Diagnostics;
+using static Seb.Helpers.ColHelper;
 
 namespace DLS.Game
 {
@@ -18,7 +22,7 @@ namespace DLS.Game
 		public readonly IMoveable parent;
 		public uint State; // sim state
 		public uint PlayerInputState; // dev input pins only
-		public PinColour Colour;
+		public ColorWithName Colour;
 		bool faceRight;
 		public float LocalPosY;
 		public string Name;
@@ -33,7 +37,7 @@ namespace DLS.Game
 			IsSourcePin = isSourcePin;
 			Colour = desc.Colour;
 
-			IsBusPin = parent is SubChipInstance subchip && subchip.IsBus;
+            IsBusPin = parent is SubChipInstance subchip && subchip.IsBus;
 			faceRight = isSourcePin;
 		}
 
@@ -63,23 +67,62 @@ namespace DLS.Game
 		{
 			faceRight = IsSourcePin ^ flipped;
 		}
+		public Color GetColLow(string test1)
+		{      
+            for (int i = 0; i < DLS.Graphics.ContextMenu.pinColors.Count; i++)
+			{
+                
+                if (DLS.Graphics.ContextMenu.pinColors[i].Name == test1)
+				{
+					return DLS.Graphics.ContextMenu.pinColors[i].LowColor; 
+                }
+			}
+            // If no matching color entry is found, return a default color
+			return Color.black;
+        }
 
-		public Color GetColLow() => DrawSettings.ActiveTheme.StateLowCol[(int)Colour];
-		public Color GetColHigh() => DrawSettings.ActiveTheme.StateHighCol[(int)Colour];
+        public Color GetColHigh(string test1)
+        {
+            for (int i = 0; i < DLS.Graphics.ContextMenu.pinColors.Count; i++)
+            {
+				
+                if (DLS.Graphics.ContextMenu.pinColors[i].Name == test1)
+				{ 
+                    return DLS.Graphics.ContextMenu.pinColors[i].HighColor; 
+                }
 
-		public Color GetStateCol(int bitIndex, bool hover = false, bool canUsePlayerState = true)
+            }
+            // If no matching color entry is found, return a default color
+            return Color.black;
+        }
+
+        public Color GetStateCol(int bitIndex, bool hover = false, bool canUsePlayerState = true)
 		{
 			uint pinState = (IsSourcePin && canUsePlayerState) ? PlayerInputState : State; // dev input pin uses player state (so it updates even when sim is paused)
 
 			uint state = PinState.GetBitTristatedValue(pinState, bitIndex);
-			int colIndex = (int)Colour;
+            ColorWithName colorEntry = DLS.Graphics.ContextMenu.pinColors
+        .FirstOrDefault(entry => entry.Name == Colour.Name);
 
-			return state switch
+			
+            if (colorEntry.Equals(default(ColorWithName)))
+            {
+				// If no matching color entry is found, return a default color
+				this.Colour = DLS.Graphics.ContextMenu.pinColors[0];
+                return state switch
+                {
+                    PinState.LogicHigh => colorEntry.HighColor,
+                    PinState.LogicLow => hover ? colorEntry.HoverColor : colorEntry.LowColor,
+                    _ => DrawSettings.ActiveTheme.StateDisconnectedCol
+                };
+			}
+
+            return state switch
 			{
-				PinState.LogicHigh => DrawSettings.ActiveTheme.StateHighCol[colIndex],
-				PinState.LogicLow => hover ? DrawSettings.ActiveTheme.StateHoverCol[colIndex] : DrawSettings.ActiveTheme.StateLowCol[colIndex],
-				_ => DrawSettings.ActiveTheme.StateDisconnectedCol
-			};
+                PinState.LogicHigh => colorEntry.HighColor,
+                PinState.LogicLow => hover ? colorEntry.HoverColor : colorEntry.LowColor,
+                _ => DrawSettings.ActiveTheme.StateDisconnectedCol
+            };
 		}
 	}
 }

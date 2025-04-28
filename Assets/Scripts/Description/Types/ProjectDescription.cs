@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using DLS.ColorStorage;
 using Newtonsoft.Json;
-using UnityEngine;
 
 namespace DLS.Description
 {
