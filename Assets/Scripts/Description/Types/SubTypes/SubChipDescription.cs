@@ -1,4 +1,5 @@
 using UnityEngine;
+using DLS.ColorStorage;
 
 namespace DLS.Description
 {
@@ -30,10 +31,10 @@ namespace DLS.Description
 
 	public struct OutputPinColourInfo
 	{
-		public PinColour PinColour;
+		public ColorWithName PinColour;
 		public int PinID;
 
-		public OutputPinColourInfo(PinColour pinColour, int pinID)
+		public OutputPinColourInfo(ColorWithName pinColour, int pinID)
 		{
 			PinColour = pinColour;
 			PinID = pinID;

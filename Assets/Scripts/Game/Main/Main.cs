@@ -6,6 +6,7 @@ using DLS.Description;
 using DLS.Graphics;
 using DLS.SaveSystem;
 using UnityEngine;
+using DLS.ColorStorage;
 
 namespace DLS.Game
 {
@@ -16,7 +17,7 @@ namespace DLS.Game
 		public static readonly string LastUpdatedString = "25 April 2025";
 		public static AppSettings ActiveAppSettings;
 
-		public static Project ActiveProject { get; private set; }
+        public static Project ActiveProject { get; private set; }
 
 		public static Vector2Int FullScreenResolution => new(Display.main.systemWidth, Display.main.systemHeight);
 
@@ -84,7 +85,8 @@ namespace DLS.Game
 				Prefs_SimStepsPerClockTick = 250,
 				Prefs_SimPaused = false,
 				AllCustomChipNames = Array.Empty<string>(),
-				StarredList = BuiltinCollectionCreator.GetDefaultStarredList().ToList(),
+				CustomPinColors = new List<ColorWithName>(),
+                StarredList = BuiltinCollectionCreator.GetDefaultStarredList().ToList(),
 				ChipCollections = new List<ChipCollection>(BuiltinCollectionCreator.CreateDefaultChipCollections())
 			};
 

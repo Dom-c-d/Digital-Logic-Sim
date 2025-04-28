@@ -3,6 +3,7 @@ using Seb.Vis;
 using Seb.Vis.UI;
 using UnityEngine;
 using static Seb.Helpers.ColHelper;
+using DLS.SaveSystem;
 
 namespace DLS.Graphics
 {
@@ -76,10 +77,22 @@ namespace DLS.Graphics
 				new(0.84f, 0.33f, 0.9f),
 				new(whiteHigh, whiteHigh, whiteHigh)
 			};
+            //Delete above once new color system built
+            Color[] stateHover = stateLow.Select(c => Brighten(c, 0.1f)).ToArray();
+			//if (Loader.LoadedColors != null && Loader.LoadedColors.Length > 0)
+			//{
+			//	for (int i = 0; i < Loader.LoadedColors.Length; i += 3)
+			//	{
+			//		Color low = Loader.LoadedColors[i];
+			//		Color high = Loader.LoadedColors[i + 1];
+			//		Color hover = Loader.LoadedColors[i + 2];
 
-			Color[] stateHover = stateLow.Select(c => Brighten(c, 0.1f)).ToArray();
-
-            return new ThemeDLS
+			//		stateLow = stateLow.Append(low).ToArray();
+			//		stateHigh = stateHigh.Append(high).ToArray();
+			//		stateHover = stateHover.Append(hover).ToArray();
+			//	}
+			//}
+			return new ThemeDLS
             {
                 SelectionBoxCol = new Color(1, 1, 1, 0.1f),
                 SelectionBoxMovingCol = new Color(1, 1, 1, 0.125f),
@@ -122,6 +135,7 @@ namespace DLS.Graphics
 			Color chipLibaryButtonOff = MakeCol255(88, 97, 112);
 			Color chipLibaryButtonOn = MakeCol255(255, 64, 102);
 			Color menuPanelCol = MakeCol255(41);
+			Color ColorInputField = MakeCol255(125);
 
 			Color chipLibraryCollectionHighlightCol = MakeCol(0.97, 0.47, 0.47);
 			Color chipLibraryChipHighlightCol = MakeCol(0.32, 0.61, 0.85);
@@ -191,7 +205,18 @@ namespace DLS.Graphics
 					boxCol = Color.white,
 					tickCol = Color.black
 				},
-				InfoBarCol = new Color(0, 0, 0, 0.9f),
+                CustomColorTheme = new InputFieldTheme
+                {
+                    font = fontBold,
+                    fontSize = UIThemeLibrary.FontSizeLarge,
+                    bgCol = MakeCol255(20),
+                    defaultTextCol = MakeCol255(40),
+                    textCol = Color.white,
+                    focusBorderCol = Color.black
+                },
+
+
+                InfoBarCol = new Color(0, 0, 0, 0.9f),
 				StarredBarCol = MakeCol(29 / 255f)
 			};
 
@@ -241,6 +266,7 @@ namespace DLS.Graphics
 			public Color[] StateHighCol;
 			public Color[] StateHoverCol;
 			public Color[] StateLowCol;
+			public Color[] CustomColors;
 
 			public Color[] DisplayLEDCols; // Disconnected, Off, On
 		}
@@ -259,7 +285,8 @@ namespace DLS.Graphics
 			public ButtonTheme ChipLibraryCollectionToggleOn;
 
 			public InputFieldTheme ChipNameInputField;
-			public FontType FontBold;
+            public InputFieldTheme CustomColorTheme;
+            public FontType FontBold;
 			public FontType FontRegular;
 			public float FontSizeRegular;
 

@@ -1,4 +1,6 @@
 using UnityEngine;
+using DLS.ColorStorage;
+using System.Collections.Generic;
 
 namespace DLS.Description
 {
@@ -8,10 +10,10 @@ namespace DLS.Description
 		public int ID;
 		public Vector2 Position;
 		public PinBitCount BitCount;
-		public PinColour Colour;
+        public ColorWithName Colour;
 		public PinValueDisplayMode ValueDisplayMode;
 
-		public PinDescription(string name, int id, Vector2 position, PinBitCount bitCount, PinColour colour, PinValueDisplayMode valueDisplayMode)
+		public PinDescription(string name, int id, Vector2 position, PinBitCount bitCount, ColorWithName colour, PinValueDisplayMode valueDisplayMode)
 		{
 			Name = name;
 			ID = id;
@@ -29,16 +31,6 @@ namespace DLS.Description
 		Bit8 = 8
 	}
 
-	public enum PinColour
-	{
-		Red,
-		Yellow,
-		Green,
-		Blue,
-		Violet,
-		Pink,
-		White
-	}
 
 	public enum PinValueDisplayMode
 	{

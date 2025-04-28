@@ -1,16 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DLS.Description;
 using DLS.Game;
 using UnityEngine;
+using DLS.ColorStorage;
+using static Seb.Helpers.ColHelper;
 
 namespace DLS.SaveSystem
 {
 	public static class Loader
 	{
-		public static AppSettings LoadAppSettings()
+		
+        public static AppSettings LoadAppSettings()
 		{
 			if (File.Exists(SavePaths.AppSettingsPath))
 			{
@@ -25,8 +29,76 @@ namespace DLS.SaveSystem
 		{
 			ProjectDescription projectDescription = LoadProjectDescription(projectName);
 			ChipLibrary chipLibrary = LoadChipLibrary(projectDescription);
-			return new Project(projectDescription, chipLibrary);
+			
+			if (projectDescription.CustomPinColors == null || projectDescription.CustomPinColors.Count == 0)
+			{
+				DLS.Graphics.ContextMenu.pinColors = projectDescription.CustomPinColors;
+				{
+					projectDescription.CustomPinColors = new List<ColorWithName> {
+				new ColorWithName(
+				new Color(0.2f, 0.1f, 0.1f),  // LowColor
+                new Color(0.95f, 0.3f, 0.31f), // HighColor
+                Brighten(new Color(0.2f, 0.1f, 0.1f), 0.1f), // HoverColor
+                "Red"
+			),
+
+			new ColorWithName(
+				new Color(0.25f, 0.18f, 0.04f), // LowColor
+                new Color(0.92f, 0.7f, 0.25f),  // HighColor
+                Brighten(new Color(0.25f, 0.18f, 0.04f), 0.1f), // HoverColor
+                "Yellow"
+			),
+
+			new ColorWithName(
+				new Color(0.1f, 0.2f, 0.1f),   // LowColor
+                new Color(0.25f, 0.66f, 0.31f), // HighColor
+                Brighten(new Color(0.1f, 0.2f, 0.1f), 0.1f),  // HoverColor
+                "Green"
+			),
+
+			new ColorWithName(
+				new Color(0.1f, 0.14f, 0.35f), // LowColor
+                new Color(0.2f, 0.5f, 1f),     // HighColor
+                Brighten(new Color(0.1f, 0.14f, 0.35f), 0.1f), // HoverColor
+                "Blue"
+			),
+
+			new ColorWithName(
+				new Color(0.19f, 0.12f, 0.28f), // LowColor
+                new Color(0.6f, 0.4f, 0.98f),   // HighColor
+                Brighten(new Color(0.19f, 0.12f, 0.28f), 0.1f), // HoverColor
+                "Violet"
+			),
+
+			new ColorWithName(
+				new Color(0.25f, 0.1f, 0.25f), // LowColor
+                new Color(0.84f, 0.33f, 0.9f),  // HighColor
+                Brighten(new Color(0.25f, 0.1f, 0.25f), 0.1f), // HoverColor
+                "Pink"
+			),
+
+			new ColorWithName(
+				new Color(0.4f, 0.4f, 0.4f),   // LowColor
+                new Color(0.9f, 0.9f, 0.9f),   // HighColor
+                Brighten(new Color(0.4f, 0.4f, 0.4f), 0.1f),   // HoverColor
+                "White"
+			),
+
+			new ColorWithName(
+				new Color(0.027f, 0.537f, 0.651f),   // LowColor
+                new Color(0f, 0.82f, 1f),   // HighColor
+                Brighten(new Color(0.027f, 0.537f, 0.651f), 0.1f),   // HoverColor
+                "Debugging"
+			)};
+					
+				}
+			}
+                DLS.Graphics.ContextMenu.pinColors = projectDescription.CustomPinColors;
+                DLS.Graphics.ContextMenu.UpdatePinColEntries();
+
+				return new Project(projectDescription, chipLibrary);
 		}
+		
 
 		public static bool ProjectExists(string projectName)
 		{
@@ -53,8 +125,8 @@ namespace DLS.SaveSystem
 			{
 				collection.UpdateDisplayStrings();
 			}
-
-			return desc;
+            
+            return desc;
 		}
 
 		// Get list of saved project descriptions (ordered by last save time)
@@ -106,5 +178,5 @@ namespace DLS.SaveSystem
 
 			return new ChipLibrary(loadedChips, builtinChips);
 		}
-	}
+    }
 }

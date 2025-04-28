@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using DLS.ColorStorage;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace DLS.Description
 {
@@ -28,8 +30,13 @@ namespace DLS.Description
 		public List<StarredItem> StarredList;
 		public List<ChipCollection> ChipCollections;
 
-		// ---- Helper functions ----
-		public bool IsStarred(string chipName, bool isCollection)
+
+        //Custom Colors go here
+        public List<ColorWithName> CustomPinColors;
+
+
+        // ---- Helper functions ----
+        public bool IsStarred(string chipName, bool isCollection)
 		{
 			foreach (StarredItem item in StarredList)
 			{

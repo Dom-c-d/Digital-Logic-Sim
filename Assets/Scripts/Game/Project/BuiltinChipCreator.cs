@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DLS.Description;
 using UnityEngine;
 using static DLS.Graphics.DrawSettings;
+using DLS.ColorStorage;
 
 namespace DLS.Game
 {
@@ -397,7 +398,7 @@ namespace DLS.Game
 				id,
 				Vector2.zero,
 				bitCount,
-				PinColour.Red,
+                new ColorWithName(Color.red, Color.red, Color.red, "Red"),
 				PinValueDisplayMode.Off
 			);
 

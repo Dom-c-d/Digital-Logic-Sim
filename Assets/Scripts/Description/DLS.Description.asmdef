@@ -1,3 +1,5 @@
 {
-  "name": "DLS.Description"
+  "name": "DLS.Description",
+  "references":[
+  "GUID:d4f8eab5cdd4a544c9923829818c11c0"]
 }
