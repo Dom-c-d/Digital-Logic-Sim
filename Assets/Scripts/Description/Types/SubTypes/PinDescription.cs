@@ -10,10 +10,10 @@ namespace DLS.Description
 		public int ID;
 		public Vector2 Position;
 		public PinBitCount BitCount;
-        public ColorWithName Colour;
+        public string Colour;
 		public PinValueDisplayMode ValueDisplayMode;
 
-		public PinDescription(string name, int id, Vector2 position, PinBitCount bitCount, ColorWithName colour, PinValueDisplayMode valueDisplayMode)
+		public PinDescription(string name, int id, Vector2 position, PinBitCount bitCount, string colour, PinValueDisplayMode valueDisplayMode)
 		{
 			Name = name;
 			ID = id;

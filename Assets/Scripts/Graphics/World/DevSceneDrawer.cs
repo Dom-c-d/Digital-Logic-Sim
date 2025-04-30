@@ -809,7 +809,7 @@ namespace DLS.Graphics
 				// Currently moving this point (mouse may not be over due to snapping, etc)
 				highlighted |= controller.wireToEdit != null && controller.wireEditPointIndex == i;
 				highlighted &= canInteract;
-				var ColName = wire.SourcePin.Colour.Name;
+				var ColName = wire.SourcePin.Colour;
 				Color editPointCol = highlighted ? wire.SourcePin.GetColHigh(ColName) : wire.SourcePin.GetColLow(ColName);
 
 				Draw.Point(p, rBG, Color.white);

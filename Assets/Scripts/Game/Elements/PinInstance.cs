@@ -7,6 +7,7 @@ using UnityEngine;
 using DLS.ColorStorage;
 using System.Diagnostics;
 using static Seb.Helpers.ColHelper;
+using UnityEditor.Build;
 
 namespace DLS.Game
 {
@@ -22,7 +23,7 @@ namespace DLS.Game
 		public readonly IMoveable parent;
 		public uint State; // sim state
 		public uint PlayerInputState; // dev input pins only
-		public ColorWithName Colour;
+		public string Colour;
 		bool faceRight;
 		public float LocalPosY;
 		public string Name;
@@ -67,12 +68,12 @@ namespace DLS.Game
 		{
 			faceRight = IsSourcePin ^ flipped;
 		}
-		public Color GetColLow(string test1)
+		public Color GetColLow(string colname)
 		{      
             for (int i = 0; i < DLS.Graphics.ContextMenu.pinColors.Count; i++)
 			{
                 
-                if (DLS.Graphics.ContextMenu.pinColors[i].Name == test1)
+                if (DLS.Graphics.ContextMenu.pinColors[i].Name == colname)
 				{
 					return DLS.Graphics.ContextMenu.pinColors[i].LowColor; 
                 }
@@ -81,12 +82,12 @@ namespace DLS.Game
 			return Color.black;
         }
 
-        public Color GetColHigh(string test1)
+        public Color GetColHigh(string colname)
         {
             for (int i = 0; i < DLS.Graphics.ContextMenu.pinColors.Count; i++)
             {
 				
-                if (DLS.Graphics.ContextMenu.pinColors[i].Name == test1)
+                if (DLS.Graphics.ContextMenu.pinColors[i].Name == colname)
 				{ 
                     return DLS.Graphics.ContextMenu.pinColors[i].HighColor; 
                 }
@@ -102,27 +103,26 @@ namespace DLS.Game
 
 			uint state = PinState.GetBitTristatedValue(pinState, bitIndex);
             ColorWithName colorEntry = DLS.Graphics.ContextMenu.pinColors
-        .FirstOrDefault(entry => entry.Name == Colour.Name);
-
-			
-            if (colorEntry.Equals(default(ColorWithName)))
+        .FirstOrDefault(entry => entry.Name == Colour);
+            
+            if (colorEntry.Name == null) //if could not find colour entry, could be an old chip value. Check if Colour is a valid index.
             {
-				// If no matching color entry is found, return a default color
-				this.Colour = DLS.Graphics.ContextMenu.pinColors[0];
-                return state switch
+                if (int.TryParse(Colour, out int index) && index >= 0 && index < DLS.Graphics.ContextMenu.pinColors.Count)
                 {
-                    PinState.LogicHigh => colorEntry.HighColor,
-                    PinState.LogicLow => hover ? colorEntry.HoverColor : colorEntry.LowColor,
-                    _ => DrawSettings.ActiveTheme.StateDisconnectedCol
-                };
-			}
+                    // If the Colour is a valid index, update description to new color type and then return.
+                    colorEntry = DLS.Graphics.ContextMenu.pinColors[index];
+					this.Colour = DLS.Graphics.ContextMenu.pinColors[index].Name;
+                }
+                else
+                {
+                    // If no matching color entry is found, return a default color
+                    this.Colour = DLS.Graphics.ContextMenu.pinColors[0].Name;
+                }
+            }
+            if (state == PinState.LogicDisconnected) return DrawSettings.ActiveTheme.StateDisconnectedCol;
+			else if (state != PinState.LogicHigh && hover) return colorEntry.HoverColor;
+			return state == PinState.LogicHigh ? colorEntry.HighColor : colorEntry.LowColor;
 
-            return state switch
-			{
-                PinState.LogicHigh => colorEntry.HighColor,
-                PinState.LogicLow => hover ? colorEntry.HoverColor : colorEntry.LowColor,
-                _ => DrawSettings.ActiveTheme.StateDisconnectedCol
-            };
-		}
+        }
 	}
 }

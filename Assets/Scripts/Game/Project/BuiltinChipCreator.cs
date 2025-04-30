@@ -398,7 +398,7 @@ namespace DLS.Game
 				id,
 				Vector2.zero,
 				bitCount,
-                new ColorWithName(Color.red, Color.red, Color.red, "Red"),
+                "Red",
 				PinValueDisplayMode.Off
 			);
 

@@ -31,10 +31,10 @@ namespace DLS.Description
 
 	public struct OutputPinColourInfo
 	{
-		public ColorWithName PinColour;
+		public string PinColour;
 		public int PinID;
 
-		public OutputPinColourInfo(ColorWithName pinColour, int pinID)
+		public OutputPinColourInfo(string pinColour, int pinID)
 		{
 			PinColour = pinColour;
 			PinID = pinID;
